@@ -2,6 +2,40 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 cd "$SCRIPT_DIR"
 
+help_print() {
+    echo ""
+    echo ""
+    echo "Usage: ./sdcpp_webui_linux [options]"
+    echo ""
+    echo "Options:"
+    echo "    -h or --help:            Show this help"
+    echo "    --listen:                Share sd.cpp-webui on your local network"
+    echo "    --autostart:             Open the UI automatically"
+    echo ""
+    echo ""
+    exit 0
+}
+
+for arg in "$@"; do
+  case $arg in
+    --*'='*) shift; set -- "${arg%%=*}" "${arg#*=}" "$@"; continue;;
+    -h|--help) help_print;;
+    --listen);;
+    --autostart);;
+    *) echo "Unknown command parameter: $arg"; exit 1;;
+  esac
+done
+
+if [ ! -f "sd" ]; then
+  echo ""
+  echo ""
+  echo "Warning: stable-diffusion.cpp executable not found."
+  echo "For the command to work place the stable-diffusion.cpp executable in the main sd.cpp-webui folder."
+  echo "The executable must be called 'sd'."
+  echo ""
+  echo ""
+fi
+
 if [ -d "venv" ]; then
     echo "Virtual environment already exists."
 else
